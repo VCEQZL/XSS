@@ -7,13 +7,22 @@ from waitress import serve
 app = Flask(__name__)
 CORS(app)  # Allow Cross-Origin Resource Sharing
 
+# Define or import custom_tokenizer
+def custom_tokenizer(text):
+    # Define your tokenizer logic here
+    return text.split()
+
+# If the tokenizer is defined in a different file, import it
+# from your_module import custom_tokenizer
+
+# Load the model
 model_xss = joblib.load("SSTI.pkl")
 
 @app.route('/note', methods=['POST'])
 def check_note():
     note = request.json.get('note')
 
-    # Predict XSS for the note
+    # Predict SSTI for the note
     prediction_xss = model_xss.predict([note.lower()])
 
     response = {
@@ -22,7 +31,7 @@ def check_note():
     }
 
     if response["is_xss"]:
-        response["message"] = "XSS detected in note"
+        response["message"] = "SSTI detected in note"
     return jsonify(response)
 
 if __name__ == '__main__':
