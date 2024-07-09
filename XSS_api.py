@@ -7,7 +7,7 @@ from waitress import serve
 app = Flask(__name__)
 CORS(app)  # Allow Cross-Origin Resource Sharing
 
-model_xss = joblib.load("best_xss_model_count_vectorizer.pkl")
+model_xss = joblib.load("SSTI.pkl")
 
 @app.route('/note', methods=['POST'])
 def check_note():
